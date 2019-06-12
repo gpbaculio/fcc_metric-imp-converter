@@ -21,10 +21,17 @@ function ConvertHandler() {
     else if (initUnit === 'km') return 'mi'
   };
 
-  this.spellOutUnit = function (unit) {
-    var result;
+  this.spellOutUnit = function (initNum, unit) {
+    const metrics = {
+      L: 'Liter',
+      gal: 'galloon',
+      lbs: 'pound',
+      kg: 'kilogram',
+      mi: 'mile',
+      km: 'kilometer',
+    }
 
-    return result;
+    return `${metrics[unit]}${initNum >= 2 && 's'}`;
   };
 
   this.convert = function (initNum, initUnit) {
@@ -38,9 +45,9 @@ function ConvertHandler() {
   };
 
   this.getString = function (initNum, initUnit, returnNum, returnUnit) {
-    var result;
 
-    return result;
+
+    return `${initNum} ${this.spellOutUnit(initNum, initUnit)} converts to ${returnNum} ${this.spellOutUnit(returnNum, returnUnit)}`;
   };
 
 }
