@@ -8,10 +8,8 @@
 
 'use strict';
 
-import { errors } from './constants'
 var expect = require('chai').expect;
 var ConvertHandler = require('../controllers/convertHandler.js');
-
 
 module.exports = function (app) {
 
@@ -25,10 +23,9 @@ module.exports = function (app) {
       var returnNum = convertHandler.convert(initNum, initUnit);
       var returnUnit = convertHandler.getReturnUnit(initUnit);
       var toString = convertHandler.getString(initNum, initUnit, returnNum, returnUnit);
-      if (!initNum) return res.send(errors.initNum)
-      if (!initUnit) return res.send(errors.initUnit)
-      if (!initNum && !initUnit) return res.send(errors.initNumUnit)
-      res.json({ initNum, initUnit, returnNum, returnUnit, string: toString })
+      if (!initNum && !initUnit) return res.send('Invalid number and unit')
+      if (!initNum) return res.send('Invalid number')
+      if (!initUnit) return res.send('Invalid unit')
     });
 
 };

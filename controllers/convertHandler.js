@@ -5,30 +5,46 @@
 *       
 *       
 */
-import { units, unitKeys } from './constants'
+const units = {
+  volume: {
+    l: 'Liter',
+    gal: 'Gallon'
+  },
+  length: {
+    mi: 'mile',
+    km: 'kilometer'
+  },
+  weight: {
+    lbs: 'pound',
+    kg: 'kilogram'
+  }
+}
 
 
 
 function ConvertHandler() {
-  this.getFirstLetterIndex = (input) => input.indexOf(input.match(/[a-zA-Z]/)); // Hint: Split the input by looking for the index of the first character.
+  this.getFirstLetterIndex = input => input.indexOf(input.match(/[a-zA-Z]/)); // Hint: Split the input by looking for the index of the first character.
   this.countOccurence = (text, separator) => text.split(separator).length - 1;
   this.getNum = input => {
     const firstLetterIndex = this.getFirstLetterIndex(input)
     if (firstLetterIndex == 0) return 1;
+    if (firstLetterIndex === -1) return null; // no unit provided
     const inputNum = input.slice(0, firstLetterIndex);
     const fractionCount = this.countOccurence(inputNum, '/'); // count '/' occurence
     if (fractionCount > 1) return null // there may only be one fraction
     if (fractionCount) {
-      const numbers = inputNum.split('/')
-      const validDecimals = numbers.map(n => this.countOccurence(n, '.')).every(count => count <= 1)
+      const numbersArr = inputNum.split('/')
+      const validDecimals = numbersArr.map(n => this.countOccurence(n, '.')).every(count => count <= 1)
       if (!validDecimals) return null
     }
     return inputNum
   } // replace none numeric chars with nothing
 
   this.getUnit = input => {
-    const unit = input.replace(/[^A-z]/g, '');
-    if (unit && unitKeys.includes(unit)) return unit
+    const unitKeys = Object.keys(units).map(un => Object.keys(units[un])).reduce((a, b) => a.concat(b))
+    const firstLetterIndex = this.getFirstLetterIndex(input)
+    const unit = input.slice(firstLetterIndex).toLowerCase();
+    if (unitKeys.includes(unit)) return unit
     else return null
   } // replace numeric chars with nothing
 
