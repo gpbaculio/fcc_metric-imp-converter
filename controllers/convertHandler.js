@@ -5,12 +5,26 @@
 *       
 *       
 */
+import { units, unitKeys } from './constants'
+
+
 
 function ConvertHandler() {
+  this.getFirstLetterIndex = function (input) { // Hint: Split the input by looking for the index of the first character.
+    const regex = /[a-zA-Z]/;
+    return input.indexOf(input.match(regex));
+  }
+  this.getNum = input => {
+    const firstLetterIndex = this.getFirstLetterIndex(input)
+    if (firstLetterIndex == 0) return 1;
+    const inputNum = input.slice(0, firstLetterIndex);
+  } // replace none numeric chars with nothing
 
-  this.getNum = input => input.replace(/\D+$/g, ""); // replace none numeric chars with nothing
-
-  this.getUnit = input => input.replace(/[^A-z]/g, ''); // replace numeric chars with nothing
+  this.getUnit = input => {
+    const unit = input.replace(/[^A-z]/g, '');
+    if (unit && unitKeys.includes(unit)) return unit
+    else return null
+  } // replace numeric chars with nothing
 
   this.getReturnUnit = function (initUnit) {
     if (initUnit === 'L') return 'gal'
@@ -22,16 +36,7 @@ function ConvertHandler() {
   };
 
   this.spellOutUnit = function (initNum, unit) {
-    const metrics = {
-      L: 'Liter',
-      gal: 'galloon',
-      lbs: 'pound',
-      kg: 'kilogram',
-      mi: 'mile',
-      km: 'kilometer',
-    }
-
-    return `${metrics[unit]}${initNum >= 2 && 's'}`;
+    return `${units[unit]}${initNum >= 2 && 's'}`;
   };
 
   this.convert = function (initNum, initUnit) {
@@ -41,12 +46,9 @@ function ConvertHandler() {
     if (initUnit === 'L' || initUnit === 'gal') return initNum * galToL;
     else if (initUnit === 'lbs' || initUnit === 'kg') return initNum * lbsToKg;
     else if (initUnit === 'mi' || initUnit === 'km') return initNum * miToKm;
-    else return 'Invalid Unit'
   };
 
   this.getString = function (initNum, initUnit, returnNum, returnUnit) {
-
-
     return `${initNum} ${this.spellOutUnit(initNum, initUnit)} converts to ${returnNum} ${this.spellOutUnit(returnNum, returnUnit)}`;
   };
 
