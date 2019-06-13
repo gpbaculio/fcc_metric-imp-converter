@@ -11,12 +11,12 @@ const units = {
     gal: 'Gallon'
   },
   length: {
-    mi: 'mile',
+    mi: 'Mile',
     km: 'kilometer'
   },
   weight: {
-    lbs: 'pound',
-    kg: 'kilogram'
+    lbs: 'Pound',
+    kg: 'Kilogram'
   }
 }
 
@@ -65,13 +65,27 @@ function ConvertHandler() {
     const galToL = 3.78541;
     const lbsToKg = 0.453592;
     const miToKm = 1.60934;
-    if (initUnit === 'L' || initUnit === 'gal') return initNum * galToL;
-    else if (initUnit === 'lbs' || initUnit === 'kg') return initNum * lbsToKg;
-    else if (initUnit === 'mi' || initUnit === 'km') return initNum * miToKm;
+    const convertTable = {
+      gal: galToL,
+      l: 1 / galToL,
+      mi: miToKm,
+      km: 1 / miToKm,
+      lbs: lbsToKg,
+      kg: 1 / lbsToKg,
+    };
+    return initNum * convertTable[initUnit]
   };
-
+  this.getUnitWord = (unit, val) => {
+    const primaryUnits = Object.keys(units)
+    let result;
+    primaryUnits.forEach(k => {
+      const metricKeys = Object.keys(units[k])
+      if (metricKeys.includes(unit)) result = units[k][unit]
+    })
+    return `${result}${val > 1 && 's'}`
+  }
   this.getString = function (initNum, initUnit, returnNum, returnUnit) {
-    return `${initNum} ${this.spellOutUnit(initNum, initUnit)} converts to ${returnNum} ${this.spellOutUnit(returnNum, returnUnit)}`;
+    return `${initNum} ${this.getUnitWord(initUnit, initNum)} converts to ${returnNum} ${this.getUnitWord(returnUnit, returnNum)}`;
   };
 
 }
