@@ -10,14 +10,20 @@ import { units, unitKeys } from './constants'
 
 
 function ConvertHandler() {
-  this.getFirstLetterIndex = function (input) { // Hint: Split the input by looking for the index of the first character.
-    const regex = /[a-zA-Z]/;
-    return input.indexOf(input.match(regex));
-  }
+  this.getFirstLetterIndex = (input) => input.indexOf(input.match(/[a-zA-Z]/)); // Hint: Split the input by looking for the index of the first character.
+  this.countOccurence = (text, separator) => text.split(separator).length - 1;
   this.getNum = input => {
     const firstLetterIndex = this.getFirstLetterIndex(input)
     if (firstLetterIndex == 0) return 1;
     const inputNum = input.slice(0, firstLetterIndex);
+    const fractionCount = this.countOccurence(inputNum, '/'); // count '/' occurence
+    if (fractionCount > 1) return null // there may only be one fraction
+    if (fractionCount) {
+      const numbers = inputNum.split('/')
+      const validDecimals = numbers.map(n => this.countOccurence(n, '.')).every(count => count <= 1)
+      if (!validDecimals) return null
+    }
+    return inputNum
   } // replace none numeric chars with nothing
 
   this.getUnit = input => {
