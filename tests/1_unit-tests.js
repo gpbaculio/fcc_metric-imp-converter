@@ -29,23 +29,27 @@ suite('Unit Tests', function () {
     });
 
     test('Fractional Input', function (done) {
-
-      //done();
+      var input = '3/2L';
+      assert.equal(convertHandler.getNum(input), '3/2');
+      done();
     });
 
     test('Fractional Input w/ Decimal', function (done) {
-
-      //done();
+      var input = '3.5/2.3L';
+      assert.equal(convertHandler.getNum(input), '3.5/2.3');
+      done();
     });
 
     test('Invalid Input (double fraction)', function (done) {
-
-      //done();
+      var input = '3.5/2.3/2L';
+      assert.equal(convertHandler.getNum(input), null);
+      done();
     });
 
     test('No Numerical Input', function (done) {
-
-      //done();
+      var input = 'kg';
+      assert.equal(convertHandler.getNum(input), 1);
+      done();
     });
 
   });
