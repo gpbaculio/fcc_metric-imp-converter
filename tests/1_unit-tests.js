@@ -58,15 +58,25 @@ suite('Unit Tests', function () {
 
     test('For Each Valid Unit Inputs', function (done) {
       var input = ['gal', 'l', 'mi', 'km', 'lbs', 'kg', 'GAL', 'L', 'MI', 'KM', 'LBS', 'KG'];
+      const returnUnits = {
+        l: 'gal',
+        gal: 'L',
+        lbs: 'kg',
+        kg: 'lbs',
+        mi: 'km',
+        km: 'mi',
+      }
       input.forEach(function (ele) {
-        //assert
+        const el = ele.toLowerCase()
+        assert.equal(convertHandler.getReturnUnit(ele), returnUnits[el]);
       });
       done();
     });
 
     test('Unknown Unit Input', function (done) {
-
-      //done();
+      const ele = 'kmi'
+      assert.equal(convertHandler.getReturnUnit(ele), null);
+      done();
     });
 
   });
@@ -75,7 +85,7 @@ suite('Unit Tests', function () {
 
     test('For Each Valid Unit Inputs', function (done) {
       var input = ['gal', 'l', 'mi', 'km', 'lbs', 'kg'];
-      var expect = ['l', 'gal', 'km', 'mi', 'kg', 'lbs'];
+      var expect = ['L', 'gal', 'km', 'mi', 'kg', 'lbs']; // capital L based from instructions
       input.forEach(function (ele, i) {
         assert.equal(convertHandler.getReturnUnit(ele), expect[i]);
       });
@@ -87,7 +97,11 @@ suite('Unit Tests', function () {
   suite('Function convertHandler.spellOutUnit(unit)', function () {
 
     test('For Each Valid Unit Inputs', function (done) {
-      //see above example for hint
+      var input = ['gal', 'l', 'mi', 'km', 'lbs', 'kg'];
+      var expect = ['Gallon', 'Liter', 'Mile', 'Kilometer', 'Pound', 'Kilogram'];
+      input.forEach(function (ele, i) {
+        assert.equal(convertHandler.spellOutUnit(ele, 1), expect[i]);
+      });
       done();
     });
 

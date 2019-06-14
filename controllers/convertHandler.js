@@ -12,7 +12,7 @@ const units = {
   },
   length: {
     mi: 'Mile',
-    km: 'kilometer'
+    km: 'Kilometer'
   },
   weight: {
     lbs: 'Pound',
@@ -62,10 +62,6 @@ function ConvertHandler() {
     return returnUnits[unit]
   };
 
-  this.spellOutUnit = function (initNum, unit) {
-    return `${units[unit]}${initNum >= 2 && 's'}`;
-  };
-
   this.convert = function (initNum, initUnit) {
     const galToL = 3.78541;
     const lbsToKg = 0.453592;
@@ -78,20 +74,18 @@ function ConvertHandler() {
       lbs: lbsToKg,
       kg: 1 / lbsToKg,
     };
-    return eval(initNum) * convertTable[initUnit]
+    return eval(initNum) * convertTable[initUnit].toFixed(5)
   };
-  this.getUnitWord = (unit, val) => {
+  this.spellOutUnit = (unit, val) => {
     const primaryUnits = Object.keys(units)
     let result;
     primaryUnits.forEach(k => {
       const metricKeys = Object.keys(units[k])
       if (metricKeys.includes(unit)) result = units[k][unit]
     })
-    return `${result}${eval(val) > 1 && 's'}`
+    return `${result}${eval(val) > 1 ? 's' : ''}`
   }
-  this.getString = function (initNum, initUnit, returnNum, returnUnit) {
-    return `${initNum} ${this.getUnitWord(initUnit, initNum)} converts to ${returnNum} ${this.getUnitWord(returnUnit, returnNum)}`;
-  };
+  this.getString = (initNum, initUnit, returnNum, returnUnit) => `${initNum} ${this.spellOutUnit(initUnit, initNum)} converts to ${returnNum} ${this.spellOutUnit(returnUnit, returnNum)}`;
 
 }
 
